@@ -23,9 +23,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_user_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_user_row, parent, false);
 
-        return new ViewHolder(v);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -40,8 +40,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mLogin;
-        public TextView mId;
+        public TextView mLogin, mId;
 
         public ViewHolder(View v) {
             super(v);

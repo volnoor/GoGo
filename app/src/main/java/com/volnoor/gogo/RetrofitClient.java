@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitClient {
+    private static ApiService apiService;
 
     private static final String ROOT_URL = "https://api.github.com";
 
@@ -18,7 +19,10 @@ public class RetrofitClient {
                 .build();
     }
 
-    public static ApiService getApiService(){
-        return getRetrofitInstance().create(ApiService.class);
+    public static ApiService getApiService() {
+        if (apiService == null) {
+            apiService = getRetrofitInstance().create(ApiService.class);
+        }
+        return apiService;
     }
 }
