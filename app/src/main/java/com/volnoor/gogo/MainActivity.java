@@ -1,5 +1,6 @@
 package com.volnoor.gogo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
                     mRecyclerViewUsers.setAdapter(new UsersAdapter(usersList, new OnUserClickListener() {
                         @Override
                         public void onItemClick(User user) {
-                            System.out.println(user.getLogin());
+                            Intent intent = new Intent(MainActivity.this, RepoActivity.class);
+                            intent.putExtra("login", user.getLogin());
+                            startActivity(intent);
                         }
                     }));
                 }
