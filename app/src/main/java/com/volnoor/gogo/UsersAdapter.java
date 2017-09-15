@@ -14,9 +14,11 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
     private List<User> mUsers;
+    private OnUserClickListener mListener;
 
-    public UsersAdapter(List<User> users) {
+    public UsersAdapter(List<User> users, OnUserClickListener listener) {
         mUsers = users;
+        mListener = listener;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mUsers.get(position);
-        holder.bindUser(user.getLogin());
+        holder.bindUser(user, mListener);
     }
 
     @Override
@@ -46,8 +48,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             mLogin = v.findViewById(R.id.tv_user_login);
         }
 
-        public void bindUser(String name) {
-            mLogin.setText(name);
+        public void bindUser(final User user, final OnUserClickListener listener) {
+            mLogin.setText(user.getLogin());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(user);
+                }
+            });
         }
     }
 }
