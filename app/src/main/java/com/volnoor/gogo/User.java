@@ -21,9 +21,12 @@ public class User extends RealmObject {
     @Expose
     private Integer id;
 
+    private Integer changesCount;
+
     public User() {
         login = "";
         id = 0;
+        changesCount = 0;
     }
 
     public String getLogin() {
@@ -32,5 +35,9 @@ public class User extends RealmObject {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getChangesCount() {
+        return changesCount;
     }
 }

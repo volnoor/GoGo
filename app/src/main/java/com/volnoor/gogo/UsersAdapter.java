@@ -40,18 +40,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mLogin, mId;
+        public TextView mLogin, mId, mChangesCount;
 
         public ViewHolder(View v) {
             super(v);
 
             mLogin = v.findViewById(R.id.tv_user_login);
             mId = v.findViewById(R.id.tv_user_id);
+            mChangesCount = v.findViewById(R.id.tv_changes_count);
         }
 
         public void bindUser(final User user, final OnUserClickListener listener) {
             mLogin.setText(user.getLogin());
             mId.setText(user.getId().toString());
+            mChangesCount.setText(user.getChangesCount().toString());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
