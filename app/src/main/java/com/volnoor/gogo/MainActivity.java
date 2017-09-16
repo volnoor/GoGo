@@ -1,11 +1,14 @@
 package com.volnoor.gogo;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerViewUsers;
     private List<User> usersList;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
+                new IntentFilter("data")
+        );
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,12 +140,42 @@ public class MainActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
 
+            Integer userId = Integer.parseInt(extras.getString("userId"));
+            Integer changesCount = Integer.parseInt(extras.getString("changesCount"));
+
+            Log.d("MainActivity", userId.toString());
+            Log.d("MainActivity", changesCount.toString());
+
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            User user = realm.where(User.class)
+                    .equalTo("id", userId)
+                    .findFirst();
+
+            user.setChangesCount(changesCount);
+
+            // Reload
+            RealmResults<User> realmResults = realm.where(User.class).findAll();
+            usersList.clear();
+            usersList.addAll(realm.copyFromRealm(realmResults));
+
+            mRecyclerViewUsers.getAdapter().notifyDataSetChanged();
+
+            Snackbar.make(findViewById(R.id.root), user.getLogin() + " has been updated", Snackbar.LENGTH_SHORT).show();
+
+            realm.commitTransaction();
+        }
+    };
 }
 
 /* - витягнути юзерів в список recyclerview https://api.github.com/users +
  * - при тапі на одного юзера показати його репозиторії https://api.github.com/users/{login}/repos +
  * - всі дані повинні кешитись в realm +
- * - підключити FCM і зробити кастомний пуш з полем data в якому буде userId (id користувача) і changesCount - поле, яке треба показати в списку користувачів в червоному кружечку.
+ * - підключити FCM і зробити кастомний пуш з полем data в якому буде userId (id користувача) і changesCount - поле, яке треба показати в списку користувачів в червоному кружечку. +
  * Відкриваєм апп, бачим список користувачів гітхаба, якщо приходить пуш з полем дата, треба його розпарсити, і внести зміни в реалм обєкт користувача, змінити поле changesCount, і апдейтнути список" - ось так :)
  */

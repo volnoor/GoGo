@@ -40,4 +40,8 @@ public class User extends RealmObject {
     public Integer getChangesCount() {
         return changesCount;
     }
+
+    public void setChangesCount(int changesCount) {
+        this.changesCount = changesCount;
+    }
 }
