@@ -118,11 +118,13 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+
 }
 
 /* - витягнути юзерів в список recyclerview https://api.github.com/users +
  * - при тапі на одного юзера показати його репозиторії https://api.github.com/users/{login}/repos +
- * - всі дані повинні кешитись в realm
+ * - всі дані повинні кешитись в realm +
  * - підключити FCM і зробити кастомний пуш з полем data в якому буде userId (id користувача) і changesCount - поле, яке треба показати в списку користувачів в червоному кружечку.
  * Відкриваєм апп, бачим список користувачів гітхаба, якщо приходить пуш з полем дата, треба його розпарсити, і внести зміни в реалм обєкт користувача, змінити поле changesCount, і апдейтнути список" - ось так :)
  */
