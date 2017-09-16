@@ -1,5 +1,10 @@
 package com.volnoor.gogo;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +38,13 @@ public class RepoActivity extends AppCompatActivity {
         mAdapter = new ReposAdapter(mRepos);
         recyclerView.setAdapter(mAdapter);
 
-        load(getIntent().getStringExtra("login"));
+        String login = getIntent().getStringExtra("login");
+        setTitle(login);
+        if (isOnline()) {
+            load(login);
+        } else {
+            loadFromRealm(login);
+        }
     }
 
     private void load(String login) {
@@ -44,6 +57,7 @@ public class RepoActivity extends AppCompatActivity {
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 mRepos.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
+                saveToRealm();
             }
 
             @Override
@@ -51,5 +65,48 @@ public class RepoActivity extends AppCompatActivity {
                 System.out.println("onFailure");
             }
         });
+    }
+
+    private void saveToRealm() {
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(mRepos);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                Snackbar.make(findViewById(R.id.repo_root), "Saved", Snackbar.LENGTH_SHORT).show();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                Snackbar.make(findViewById(R.id.repo_root), "Failed to save", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadFromRealm(String login) {
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmResults<Repo> realmResults = realm.where(Repo.class)
+                //   .equalTo("userLogin", login)
+                .findAll();
+        mRepos.addAll(realm.copyFromRealm(realmResults));
+
+        //TODO userLogin in repo
+
+        mAdapter.notifyDataSetChanged();
+
+        Snackbar.make(findViewById(R.id.repo_root), "Loaded from cache", Snackbar.LENGTH_SHORT).show();
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

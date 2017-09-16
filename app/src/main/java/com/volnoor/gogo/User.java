@@ -3,18 +3,28 @@ package com.volnoor.gogo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
+
 /**
  * Created by Eugene on 14.09.2017.
  */
 
-class User {
+public class User extends RealmObject {
     @SerializedName("login")
     @Expose
+    @PrimaryKey
     private String login;
 
     @SerializedName("id")
     @Expose
     private Integer id;
+
+    public User() {
+        login = "";
+        id = 0;
+    }
 
     public String getLogin() {
         return login;
