@@ -21,7 +21,9 @@ public class Repo extends RealmObject {
     @Expose
     private String description;
 
-    private String userLogin;
+    @SerializedName("full_name")
+    @Expose
+    private String fullName;
 
     public String getName() {
         return name;
@@ -31,7 +33,7 @@ public class Repo extends RealmObject {
         return description;
     }
 
-    public String getUserLogin() {
-        return userLogin;
+    public String getFullName() {
+        return fullName;
     }
 }

@@ -92,11 +92,9 @@ public class RepoActivity extends AppCompatActivity {
         Realm realm = Realm.getDefaultInstance();
 
         RealmResults<Repo> realmResults = realm.where(Repo.class)
-                //   .equalTo("userLogin", login)
+                .beginsWith("fullName", login)
                 .findAll();
         mRepos.addAll(realm.copyFromRealm(realmResults));
-
-        //TODO userLogin in repo
 
         mAdapter.notifyDataSetChanged();
 
