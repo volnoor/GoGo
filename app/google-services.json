@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "71444276777",
-    "firebase_url": "https://gogo-5cb45.firebaseio.com",
-    "project_id": "gogo-5cb45",
-    "storage_bucket": "gogo-5cb45.appspot.com"
+    "project_number": "996844342482",
+    "firebase_url": "https://gogo-120a8.firebaseio.com",
+    "project_id": "gogo-120a8",
+    "storage_bucket": "gogo-120a8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:71444276777:android:6101df80620ea17c",
+        "mobilesdk_app_id": "1:996844342482:android:6101df80620ea17c",
         "android_client_info": {
           "package_name": "com.volnoor.gogo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "71444276777-j3c7dth5bhp5l1e1ev3v66osjqmsota9.apps.googleusercontent.com",
+          "client_id": "996844342482-2it1dncgsgfjoj6142mjnhgd8n77krv3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCz0sHeme2z0N4ysw3Yy9jDwiHrDrPttP4"
+          "current_key": "AIzaSyDomOS9jQUkXOa0XGDrxh762fu-fLYrzsk"
         }
       ],
       "services": {

@@ -24,7 +24,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         System.out.println("onMessageReceived" + remoteMessage.getData());
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("message", remoteMessage.getNotification().getBody());
+        intent.putExtra("userId", remoteMessage.getData().get("userId"));
+        intent.putExtra("changesCount", remoteMessage.getData().get("changesCount"));
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -39,13 +40,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setAutoCancel(true)
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setContentIntent(pendingIntent);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (notificationBuilder != null) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(Integer.valueOf(remoteMessage.getData().get("id")), notificationBuilder.build());
+            notificationManager.notify(0, notificationBuilder.build());
         }
     }
 }

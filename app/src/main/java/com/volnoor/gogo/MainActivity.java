@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.List;
 
@@ -38,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             loadFromRealm();
         }
+
+        // FCM
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Log.d("MainActivity", extras.getString("userId"));
+            Log.d("MainActivity", extras.getString("changesCount"));
+        }
+
     }
 
     private void load() {
