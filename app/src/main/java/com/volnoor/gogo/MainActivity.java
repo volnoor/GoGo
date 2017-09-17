@@ -51,14 +51,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             loadFromRealm();
         }
+    }
 
-        // FCM
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Log.d("MainActivity", extras.getString("userId"));
-            Log.d("MainActivity", extras.getString("changesCount"));
-        }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     private void load() {
